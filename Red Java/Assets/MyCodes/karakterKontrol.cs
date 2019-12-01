@@ -1,13 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class karakterKontrol : MonoBehaviour
 {
     Rigidbody2D Fizik;
     public Sprite[] beklemeAnimasyonu;
     public Sprite[] ziplamaAnimasyonu;
     public Sprite[] yurumeAnimasyonu;
+    public Text Can;
+    public Image DeadEnd;
+    int can = 100;
+
+    float DeadEndSayaci;
+    float anaMenuyeDonZaman;
 
     SpriteRenderer spriteRenderer;
 
@@ -32,10 +39,17 @@ public class karakterKontrol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
+        if (SceneManager.GetActiveScene().buildIndex > PlayerPrefs.GetInt("kacinciLevel"))
+        {
+            PlayerPrefs.SetInt("kacinciLevel", SceneManager.GetActiveScene().buildIndex);
+
+        }
+
         Fizik = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         kamera = GameObject.FindGameObjectWithTag("MainCamera");
-
+        Can.text = "Can " + can;
         //ilk pozisyonu belirledik
         kameraIlkPos = kamera.transform.position - transform.position;
     }
@@ -57,7 +71,21 @@ public class karakterKontrol : MonoBehaviour
                 ziplamaAktif = true;
             }
         }
+        if (can <= 0)
+        {
+            Time.timeScale = 0.5f;
+            DeadEndSayaci += 0.03f;
 
+            Can.enabled = false;
+            DeadEnd.color = new Color(0, 0, 0, DeadEndSayaci);
+            anaMenuyeDonZaman += Time.deltaTime;
+
+            if (anaMenuyeDonZaman > 1)
+            {
+
+                SceneManager.LoadScene("AnaMenu");
+            }
+        }
     }
 
 
@@ -74,6 +102,30 @@ public class karakterKontrol : MonoBehaviour
         ziplamaAktif = false;
     }
 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "kursun")
+        {
+            can -= 10;
+            Can.text = "Can " + can;
+
+        }
+
+        if (collision.gameObject.tag == "dusman")
+        {
+            can -= 20;
+            Can.text = "Can " + can;
+
+        }
+
+        if (collision.gameObject.tag == "testere")
+        {
+            can -= 20;
+            Can.text = "Can " + can;
+
+        }
+    }
     void KarakterHareket()
     {
         horizontal = Input.GetAxisRaw("Horizontal");

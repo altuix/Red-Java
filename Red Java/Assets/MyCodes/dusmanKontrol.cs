@@ -27,7 +27,8 @@ public class dusmanKontrol : MonoBehaviour
     public LayerMask layerMask;
     public Sprite onTaraf;
     public Sprite arkaTaraf;
-
+    public GameObject kursun;
+    float atesZamani = 0;
 
 
     // Start is called before the first frame update
@@ -53,6 +54,15 @@ public class dusmanKontrol : MonoBehaviour
         nokalaraGit();
     }
 
+    void atesEt()
+    {
+        atesZamani += Time.deltaTime;
+        if (atesZamani > Random.Range(0.2f,1))
+        {
+            Instantiate(kursun, transform.position, Quaternion.identity);
+            atesZamani = 0;
+        }
+    }
     void nokalaraGit()
     {
 
@@ -99,6 +109,7 @@ public class dusmanKontrol : MonoBehaviour
         {//düşman beni gördü 
             hiz = 10;
             spriteRenderer.sprite = onTaraf;
+            atesEt();
         }
         else
         {// görüş alanından çıktı
@@ -106,6 +117,13 @@ public class dusmanKontrol : MonoBehaviour
             spriteRenderer.sprite = arkaTaraf;
 
         }
+    }
+
+
+
+    public Vector2 getYon()
+    {
+        return (karakter.transform.position - transform.position).normalized;
     }
 
 #if UNITY_EDITOR
@@ -127,6 +145,7 @@ public class dusmanKontrol : MonoBehaviour
     }
 #endif
 }
+
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(dusmanKontrol))]
@@ -152,6 +171,7 @@ class dusmanEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("layerMask"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("onTaraf"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("arkaTaraf"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("kursun"));
         serializedObject.ApplyModifiedProperties();
         serializedObject.Update();
     }
