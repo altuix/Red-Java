@@ -7,6 +7,10 @@ TagManager:
   - dusman
   - kursun
   - testere
+  - oyunBitsin
+  - levelBitsin
+  - canVer
+  - altin
   layers:
   - Default
   - TransparentFX

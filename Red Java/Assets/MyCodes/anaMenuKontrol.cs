@@ -18,6 +18,7 @@ public class anaMenuKontrol : MonoBehaviour
         //level2 = bolumlerSekmesi.transform.Find("Bolum2").gameObject;
         //level3 = bolumlerSekmesi.transform.Find("Bolum3").gameObject;
 
+        //alt nesnelere ulaştık
         for (int i = 0; i < PlayerPrefs.GetInt("kacinciLevel"); i++)
         {
             bolumlerSekmesi.transform.GetChild(i).GetComponent<Button>().interactable = true;

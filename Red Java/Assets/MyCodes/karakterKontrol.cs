@@ -125,6 +125,35 @@ public class karakterKontrol : MonoBehaviour
             Can.text = "Can " + can;
 
         }
+
+        if (collision.gameObject.tag == "levelBitsin")
+        {
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        if (collision.gameObject.tag == "canVer")
+        {
+
+            can += 30;
+            Can.text = "Can " + can;
+
+            //tekrar temasta can vermesin diye
+            collision.GetComponent<BoxCollider2D>().enabled = false;
+
+            //scripti çalıştırdık
+            collision.GetComponent<canVer>().enabled = true;
+            Destroy(collision.gameObject, 3);
+        }
+
+        if (collision.gameObject.tag == "altin")
+        {
+
+           
+            //tekrar temasta can vermesin diye
+            collision.GetComponent<CircleCollider2D>().enabled = false;
+            
+            Destroy(collision.gameObject);
+        }
     }
     void KarakterHareket()
     {
